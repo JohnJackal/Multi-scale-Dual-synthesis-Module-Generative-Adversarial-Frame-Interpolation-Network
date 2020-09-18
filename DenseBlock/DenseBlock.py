@@ -11,11 +11,13 @@ from torch.jit.annotations import List
 # define the Mish activation function
 class Mish(nn.Module):
     def __init__(self):
-        super().__init__()
-        print("Mish activation loaded...")
-    def forward(self,x):
-        x = x * (torch.tanh(F.softplus(x)))
-        return x
+        super(Mish, self).__init__()
+    def forward(self, input:Tensor) -> Tensor:
+        return mish(input)
+
+def mish(x:Tensor)-> Tensor:
+    feature = x * (torch.tanh(F.softplus(x)))
+    return feature
 
 class DenseLayer(nn.Module):    # module isn't a ordered structure.
     def __init__(self,num_input_features,
