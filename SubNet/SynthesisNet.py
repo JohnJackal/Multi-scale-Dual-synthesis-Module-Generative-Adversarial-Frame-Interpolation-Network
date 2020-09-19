@@ -4,11 +4,10 @@ import DenseBlock as DB
 import torch.nn.functional as F
 from collections import OrderedDict
 
+
 # define the synthesis subnet
 class SynthesisNet(nn.Module):
-    r"""Densenet-BC model class, based on
-    `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`_
-
+    r"""
     Args:
         growth_rate (int) - how many filters to add each layer (`k` in paper)
         block_num (int) - how many dense blocks there are.
@@ -29,10 +28,10 @@ class SynthesisNet(nn.Module):
 
         # 1st conv layer (with filter size 5*5)
         self.features = nn.Sequential(OrderedDict([
-            ('conv0', nn.Conv2d(3,num_init_features,kernel_size=5,stride=1,
-                                padding=2,bias=False)),
-            ('norm0',nn.BatchNorm2d(num_init_features)),
-            ('mish0',DB.Mish()),
+            ('conv0', nn.Conv2d(3,num_init_features, kernel_size=5, stride=1,
+                                padding=2, bias=False)),
+            ('norm0', nn.BatchNorm2d(num_init_features)),
+            ('mish0', DB.Mish()),
         ]))
 
         # Each DenseBlock has 3 conv layers, 3 bn layers and 2 activation functions.
@@ -60,7 +59,7 @@ class SynthesisNet(nn.Module):
         self.features.add_module('convout',nn.Conv2d(num_features,1,3,1,1,bias=False))
         self.features.add_module('mishout',DB.Mish())
 
-        # initilization
+        # initialization
         # conv layer using kaiming's idea
         # norm layer using norm(0,1)
         for m in self.modules():
